@@ -8,7 +8,7 @@ import { useState } from "react";
 const client = hc<AppType>("/");
 
 const postHello = async (_: string, { arg }: { arg: string }) => {
-  const res = await client.api.hello_post.$post({
+  const res = await client.api.hello.$post({
     form: {
       name: arg,
     },

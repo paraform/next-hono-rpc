@@ -4,10 +4,10 @@ import { env } from "@/env";
 
 async function getData() {
   const client = hc<AppType>(env.URL);
-  const url = client.api.hello_get.$url();
+  const url = client.api.users.$url();
   const res = await fetch(url, { cache: "no-store" });
 
-  const $get = client.api.hello_get.$get;
+  const $get = client.api.users.$get;
   type ResType = InferResponseType<typeof $get>;
   const json: ResType = await res.json();
 
@@ -20,7 +20,9 @@ async function Server() {
   return (
     <>
       <p>Server</p>
-      <p>{data.message}</p>
+      {data.map((user) => {
+        return <p key={user.id}>{user.name}</p>;
+      })}
     </>
   );
 }

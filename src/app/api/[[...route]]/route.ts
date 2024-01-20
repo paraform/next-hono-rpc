@@ -1,3 +1,4 @@
+import { db } from "@/db";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
@@ -14,12 +15,11 @@ const schema = z.object({
 const app = new Hono().basePath("/api");
 
 const route = app
-  .get("/hello_get", (c) => {
-    return c.json({
-      message: "Hello World!",
-    });
+  .get("/users", async (c) => {
+    const users = await db.query.users.findMany();
+    return c.json(users);
   })
-  .post("/hello_post", zValidator("form", schema), (c) => {
+  .post("/hello", zValidator("form", schema), (c) => {
     const data = c.req.valid("form");
     return c.json({
       message: `Hello ${data.name}!`,
