@@ -9,6 +9,7 @@ We love the t3 stack but wanted to explore a lightweight alternate to trpc with 
 Rename `.env.example` to `.env`.
 Run `docker compose up --build -d`
 Run `bun db:push`
+Run `bun db:studio` and add a fake user
 Run `bun i && bun dev`
 
 ## Roadmap
