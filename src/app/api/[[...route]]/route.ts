@@ -1,32 +1,31 @@
-import { db } from "@/db";
-import { zValidator } from "@hono/zod-validator";
-import { Hono } from "hono";
+import { app } from "@/server/api";
 import { handle } from "hono/vercel";
-import { z } from "zod";
 
 export const config = {
   runtime: "edge",
 };
 
-const schema = z.object({
-  name: z.string(),
-});
-
-const app = new Hono().basePath("/api");
-
-const route = app
-  .get("/users", async (c) => {
-    const users = await db.query.users.findMany();
-    return c.json(users);
-  })
-  .post("/hello", zValidator("form", schema), (c) => {
-    const data = c.req.valid("form");
-    return c.json({
-      message: `Hello ${data.name}!`,
-    });
-  });
-
-export type AppType = typeof route;
-
 export const GET = handle(app);
 export const POST = handle(app);
+
+// export type GlobalErrorResponse = {
+//   error: {
+//     message: Error;
+//     status: number;
+//   };
+// };
+
+// app.onError(async (err, c) => {
+//   return c.json<GlobalErrorResponse>({
+//     error: {
+//       message: err,
+//       status: 500,
+//     },
+//   });
+// });
+
+// app.notFound(async (c) => {
+//   return c.text(
+//     `Oops! There is nothing here! 404 Not Found.                                                                          `
+//   );
+// });

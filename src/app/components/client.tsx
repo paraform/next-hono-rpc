@@ -1,28 +1,35 @@
 "use client";
 
-import { hc } from "hono/client";
-import { AppType } from "./api/[[...route]]/route";
 import useSWRMutation from "swr/mutation";
 import { useState } from "react";
-
-const client = hc<AppType>("/");
-
-const postHello = async (_: string, { arg }: { arg: string }) => {
-  const res = await client.api.hello.$post({
-    form: {
-      name: arg,
-    },
-  });
-  return await res.json();
-};
+import { hono } from "@/server/api/client";
 
 function Client() {
-  const { trigger, isMutating, data } = useSWRMutation("hello", postHello);
+  return (
+    <>
+      <p>Client</p>
+      <InputName />
+    </>
+  );
+}
+
+function InputName() {
+  const { trigger, isMutating, data } = useSWRMutation(
+    "hello",
+    async (_: string, { arg }: { arg: string }) => {
+      const res = await hono.api.hello.$post({
+        form: {
+          name: arg,
+        },
+      });
+
+      return await res.json();
+    }
+  );
   const [name, setName] = useState("");
 
   return (
-    <div>
-      <p>Client</p>
+    <>
       <input
         type="text"
         value={name}
@@ -33,7 +40,7 @@ function Client() {
         Send
       </button>
       <p>{data?.message}</p>
-    </div>
+    </>
   );
 }
 

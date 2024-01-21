@@ -8,7 +8,6 @@ export const env = createEnv({
    * Will throw if you access these variables on the client.
    */
   server: {
-    URL: z.string().url(),
     DATABASE_URL: z
       .string()
       .url()
@@ -22,7 +21,9 @@ export const env = createEnv({
    *
    * 💡 You'll get type errors if these are not prefixed with NEXT_PUBLIC_.
    */
-  client: {},
+  client: {
+    NEXT_PUBLIC_API_BASE_URL: z.string().url(),
+  },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
    * we need to manually destructure them to make sure all are included in bundle.
@@ -30,7 +31,7 @@ export const env = createEnv({
    * 💡 You'll get type errors if not all variables from `server` & `client` are included here.
    */
   runtimeEnv: {
-    URL: process.env.URL,
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
     DATABASE_URL: process.env.DATABASE_URL,
   },
 });
