@@ -4,18 +4,20 @@ import { type TaskProps } from "@/server/db/types";
 async function Server() {
   const url = hono.api.task.$url();
   const res = await fetch(url, { cache: "no-store" });
-  console.log(res);
-  if (res.ok) {
-    console.log(await res.json());
-  }
+  const tasks = (await res.json()) as TaskProps[];
 
   return (
     <>
       <p>Server</p>
-      <p className="text-sm">From Database:</p>
-      {/* {tasks.map((task) => {
-        return <p key={task.id}>{task.name}</p>;
-      })} */}
+      {tasks.length > 0 ? (
+        <ul className="text-sm">
+          {tasks.map((task) => {
+            return <li key={task.id}>• {task.name}</li>;
+          })}
+        </ul>
+      ) : (
+        <p>No tasks</p>
+      )}
     </>
   );
 }

@@ -1,17 +1,10 @@
-import { db } from "@/server/db";
 import { context } from "../context";
 
 export const taskRouter = context
   .get("/", async (c) => {
     try {
-      //   const userId = c.get("userId");
-      //   if (!userId) {
-      //     throw new Error("User not found");
-      //   }
-
-      const tasks = db.query.tasks.findMany({
-        where: (tasks, { eq }) =>
-          eq(tasks.createdById, "dfaea926-0a34-4463-bf45-1fd3f6cdeeb7"),
+      const tasks = await c.get("database").query.tasks.findMany({
+        where: (tasks, { eq }) => eq(tasks.createdById, c.get("userId")),
       });
 
       return c.json(tasks);

@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    container_name: mysql8
+    container_name: hono_db
     image: mysql:8.0
     restart: always
     environment:
@@ -11,4 +11,4 @@ services:
       MYSQL_PASSWORD: mysql
       MYSQL_DATABASE: database
     ports:
-      - "3306:3306"
+      - "3307:3306"

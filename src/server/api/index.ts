@@ -1,11 +1,9 @@
-import { Hono } from "hono";
-import { helloRouter } from "./routers/hello";
 import { userRouter } from "./routers/user";
 import { taskRouter } from "./routers/task";
+import { context } from "./context";
 
-export const app = new Hono()
+export const app = context
   .basePath("/api")
-  .route("/hello", helloRouter)
   .route("/user", userRouter)
   .route("/task", taskRouter);
 

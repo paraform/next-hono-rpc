@@ -1,5 +1,5 @@
 import { auth } from "@/server/auth";
-import { UserMenu } from "./dashboard/components/user-menu";
+import { UserMenu } from "./components/user-menu";
 
 export default async function DashboardLayout({
   children,
