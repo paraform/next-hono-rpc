@@ -1,39 +1,21 @@
 import { hono } from "@/server/api/client";
-import { UserProps } from "@/server/db/types";
-import { InferResponseType } from "hono";
-
-async function getHello() {
-  const url = hono.api.hello.$url();
-  const res = await fetch(url, { cache: "no-store" });
-
-  const $get = hono.api.hello.$get;
-  type ResType = InferResponseType<typeof $get>;
-  const json: ResType = await res.json();
-
-  return json;
-}
-
-async function getUsers() {
-  const url = hono.api.user.$url();
-  const res = await fetch(url, { cache: "no-store" });
-
-  const json: UserProps[] = await res.json();
-
-  return json;
-}
+import { type TaskProps } from "@/server/db/types";
 
 async function Server() {
-  const hello = await getHello();
-  const users = await getUsers();
+  const url = hono.api.task.$url();
+  const res = await fetch(url, { cache: "no-store" });
+  console.log(res);
+  if (res.ok) {
+    console.log(await res.json());
+  }
 
   return (
     <>
       <p>Server</p>
-      <p>{hello.result}</p>
       <p className="text-sm">From Database:</p>
-      {users.map((user) => {
-        return <p key={user.id}>{user.name}</p>;
-      })}
+      {/* {tasks.map((task) => {
+        return <p key={task.id}>{task.name}</p>;
+      })} */}
     </>
   );
 }
